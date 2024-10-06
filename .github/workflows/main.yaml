@@ -1,0 +1,26 @@
+name: Desplegar a surge.sh
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar nodejs  
+        uses: actions/setup-node@v3
+        with:
+            node-version: '18' 
+
+      - name: Instalar Surge       
+        run: npm install --global surge
+
+      - name: Publicar pagina
+        run: surge --project ./src --domain ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_API_KEY }}
+
